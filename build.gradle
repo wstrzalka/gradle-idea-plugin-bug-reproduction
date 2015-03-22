@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'idea'
+}
+
+repositories {
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+
+configurations {
+    sampleCompile 
+    sampleRuntime 
+}
+
+dependencies {
+    compile name:"compile"
+    runtime  name:"runtime"
+    providedCompile  name:"providedCompile"
+    providedRuntime  name:"providedRuntime"
+    sampleCompile  name:"sampleCompile"
+    sampleRuntime  name:"sampleRuntime"
+}
+
+idea {
+    module {
+        scopes.PROVIDED.minus += [configurations.providedCompile, configurations.providedRuntime]
+        scopes.RUNTIME.plus += [configurations.sampleRuntime, configurations.providedRuntime]
+ 	scopes.COMPILE.plus += [configurations.sampleCompile, configurations.providedCompile]
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+
+
+
+
